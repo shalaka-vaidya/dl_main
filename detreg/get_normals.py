@@ -32,9 +32,15 @@ def main():
         if i==10:
             break
     print('been here')
-    print("1:", r_means.mean(), r_stds.mean)
-    print("2:", b_means.mean(), b_stds.mean)
-    print("3:", g_means.mean(), g_stds.mean)
+    r_means=torch.FloatTensor(r_means)
+    b_means=torch.FloatTensor(b_means)
+    g_means=torch.FloatTensor(g_means)
+    r_stds=torch.FloatTensor(r_stds)
+    b_stds=torch.FloatTensor(b_stds)
+    g_stds=torch.FloatTensor(g_stds)
+    print("1:", r_means.mean(), r_stds.mean())
+    print("2:", b_means.mean(), b_stds.mean())
+    print("3:", g_means.mean(), g_stds.mean())
 
     
  
