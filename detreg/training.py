@@ -25,8 +25,7 @@ dm = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=F
 # model
 model = SwAV(
     gpus=1,
-    num_samples=dm.num_unlabeled_samples,
-    dataset='stl10',
+    num_samples=100,
     batch_size=batch_size
 )
 
