@@ -28,10 +28,6 @@ def main():
         r_stds.append(image[0].std())
         b_stds.append(image[1].std())
         g_stds.append(image[2].std())
-        print(i)
-        if i==10:
-            break
-    print('been here')
     r_means=torch.FloatTensor(r_means)
     b_means=torch.FloatTensor(b_means)
     g_means=torch.FloatTensor(g_means)
