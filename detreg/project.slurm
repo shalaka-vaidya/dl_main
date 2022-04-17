@@ -34,9 +34,12 @@ singularity exec --nv \
 --overlay /scratch/DL22SP/conda.ext3:ro \
 --overlay /tmp/unlabeled_224.sqsh \
 --overlay /tmp/labeled.sqsh \
-/share/apps/images/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
+/share/apps/ images/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate
 python main.py
 "
+
+echo "Done!"
+
