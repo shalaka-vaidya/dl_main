@@ -31,6 +31,7 @@ def main():
         print(i)
         if i==10:
             break
+    print('been here')
     print("1:", r_means.mean(), r_stds.mean)
     print("2:", b_means.mean(), b_stds.mean)
     print("3:", g_means.mean(), g_stds.mean)
