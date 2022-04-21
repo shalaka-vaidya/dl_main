@@ -291,6 +291,7 @@ def _max_by_axis(the_list):
 
 def nested_tensor_from_tensor_list(tensor_list: List[Tensor]):
     # TODO make this more general
+    print("DEBUGG!!!", tensor_list[0].ndim)
     if tensor_list[0].ndim == 3:
         # TODO make it support different-sized images
         max_size = _max_by_axis([list(img.shape) for img in tensor_list])
