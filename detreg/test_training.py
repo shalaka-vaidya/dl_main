@@ -20,13 +20,16 @@ dm.val_transforms = SwAVEvalDataTransform(
     normalize=stl10_normalization()
 )
 
+
+weight_path = 'https://pl-bolts-weights.s3.us-east-2.amazonaws.com/swav/checkpoints/swav_stl10.pth.tar'
+model = SwAV.load_from_checkpoint(weight_path, strict=False)
 # model
-model = SwAV(
-    gpus=1,
-    num_samples=dm.num_unlabeled_samples,
-    dataset='stl10',
-    batch_size=batch_size
-)
+# model = SwAV(
+#     gpus=1,
+#     num_samples=dm.num_unlabeled_samples,
+#     dataset='stl10',
+#     batch_size=batch_size
+# )
 
 # fit
 trainer = pl.Trainer(default_root_dir='./model',precision=16, max_epochs=5)

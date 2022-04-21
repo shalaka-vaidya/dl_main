@@ -117,10 +117,10 @@ class Backbone(BackboneBase):
             replace_stride_with_dilation=[False, False, dilation],
             pretrained=pretrained, norm_layer=FrozenBatchNorm2d)
         # load the SwAV pre-training model from the url instead of supervised pre-training model
-        if name == 'resnet50' and load_backbone == 'swav':
-            checkpoint = torch.hub.load_state_dict_from_url('https://dl.fbaipublicfiles.com/deepcluster/swav_800ep_pretrain.pth.tar',map_location="cpu")
-            state_dict = {k.replace("module.", ""): v for k, v in checkpoint.items()}
-            backbone.load_state_dict(state_dict, strict=False)
+        # if name == 'resnet50' and load_backbone == 'swav':
+        #     checkpoint = torch.hub.load_state_dict_from_url('https://dl.fbaipublicfiles.com/deepcluster/swav_800ep_pretrain.pth.tar',map_location="cpu")
+        #     state_dict = {k.replace("module.", ""): v for k, v in checkpoint.items()}
+        #     backbone.load_state_dict(state_dict, strict=False)
         super().__init__(backbone, train_backbone, return_interm_layers)
 
 
@@ -159,13 +159,13 @@ def build_swav_backbone(args, device):
         hidden_mlp=2048,
         output_dim=128,
     )
-    for name, parameter in model.named_parameters():
-        parameter.requires_grad_(False)
+    # for name, parameter in model.named_parameters():
+    #     parameter.requires_grad_(False)
 
-    checkpoint = torch.hub.load_state_dict_from_url(
-        'https://dl.fbaipublicfiles.com/deepcluster/swav_800ep_pretrain.pth.tar', map_location="cpu")
-    state_dict = {k.replace("module.", ""): v for k, v in checkpoint.items()}
-    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+    # checkpoint = torch.hub.load_state_dict_from_url(
+    #     'https://dl.fbaipublicfiles.com/deepcluster/swav_800ep_pretrain.pth.tar', map_location="cpu")
+    # state_dict = {k.replace("module.", ""): v for k, v in checkpoint.items()}
+    # missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
     return model.to(device)
 
 def build_swav_backbone_old(args, device):

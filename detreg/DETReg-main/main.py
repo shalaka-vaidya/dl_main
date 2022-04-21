@@ -27,6 +27,8 @@ from engine import evaluate, train_one_epoch, viz
 from models import build_model
 from models.backbone import build_swav_backbone, build_swav_backbone_old
 from util.default_args import set_model_defaults, get_args_parser
+from dataset import UnlabeledDataset, LabeledDataset
+import torchvision
 
 PRETRAINING_DATASETS = ['imagenet', 'imagenet100', 'coco_pretrain', 'airbus_pretrain']
 
@@ -69,7 +71,9 @@ def main(args):
                        for p in model.parameters() if p.requires_grad)
     print('number of params:', n_parameters)
 
-    dataset_train, dataset_val = get_datasets(args)
+    #dataset_train, dataset_val = get_datasets(args)
+    dataset_train = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
+    dataset_val = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
 
     if args.distributed:
         if args.cache_mode:
