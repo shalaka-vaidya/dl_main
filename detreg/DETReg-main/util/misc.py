@@ -291,12 +291,13 @@ def _max_by_axis(the_list):
 
 def nested_tensor_from_tensor_list(tensor_list: List[Tensor]):
     # TODO make this more general
-    print("DEBUGG!!!", tensor_list[0].ndim)
+    print("DEBUGG!!!", tensor_list[0].shape)
     if tensor_list[0].ndim == 3:
         # TODO make it support different-sized images
         max_size = _max_by_axis([list(img.shape) for img in tensor_list])
         # min_size = tuple(min(s) for s in zip(*[img.shape for img in tensor_list]))
         batch_shape = [len(tensor_list)] + max_size
+        print("BATCH", batch_shape)
         b, c, h, w = batch_shape
         dtype = tensor_list[0].dtype
         device = tensor_list[0].device
