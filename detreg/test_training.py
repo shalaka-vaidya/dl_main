@@ -33,4 +33,4 @@ model = SwAV.load_from_checkpoint(weight_path, strict=False)
 
 # fit
 trainer = pl.Trainer(default_root_dir='./model',precision=16, max_epochs=5)
-trainer.fit(model)
+trainer.fit(model, dm)
