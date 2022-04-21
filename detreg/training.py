@@ -1,5 +1,6 @@
 import pytorch_lightning as pl
 from pl_bolts.models.self_supervised import SwAV
+import torchvision.transforms as transforms
 #from pl_bolts.models.self_supervised.swav.transforms import (
 #     SwAVTrainDataTransform, SwAVEvalDataTransform
 # )
@@ -14,13 +15,15 @@ dm = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=F
 # dm.train_dataloader = dm.train_dataloader_mixed
 # dm.val_dataloader = dm.val_dataloader_mixed
 
-# dm.train_transforms = SwAVTrainDataTransform(
-#     normalize=stl10_normalization()
-# )
 
-# dm.val_transforms = SwAVEvalDataTransform(
-#     normalize=stl10_normalization()
-# )
+dm.train_transforms = SwAVTrainDataTransform(
+    normalize=transforms.Normalize((0.4917,0.4694,0.4148),(0.2278,0.2240,0.2280))
+)
+
+dm.val_transforms = SwAVEvalDataTransform(
+    normalize=transforms.Normalize((0.4917,0.4694,0.4148),(0.2278,0.2240,0.2280))
+)
+
 
 # model
 model = SwAV(
@@ -30,5 +33,5 @@ model = SwAV(
 )
 
 # fit
-trainer = pl.Trainer(default_root_dir='./model',precision=16, max_epochs=5)
+trainer = pl.Trainer(default_root_dir='./model',precision=16, max_epochs=1)
 trainer.fit(model)
