@@ -75,18 +75,18 @@ def main(args):
     dataset_train = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
     dataset_val = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
 
-    if args.distributed:
-        if args.cache_mode:
-            sampler_train = samplers.NodeDistributedSampler(dataset_train)
-            sampler_val = samplers.NodeDistributedSampler(
-                dataset_val, shuffle=False)
-        else:
-            sampler_train = samplers.DistributedSampler(dataset_train)
-            sampler_val = samplers.DistributedSampler(
-                dataset_val, shuffle=False)
-    else:
-        sampler_train = torch.utils.data.RandomSampler(dataset_train)
-        sampler_val = torch.utils.data.SequentialSampler(dataset_val)
+    # if args.distributed:
+    #     if args.cache_mode:
+    #         sampler_train = samplers.NodeDistributedSampler(dataset_train)
+    #         sampler_val = samplers.NodeDistributedSampler(
+    #             dataset_val, shuffle=False)
+    #     else:
+    #         sampler_train = samplers.DistributedSampler(dataset_train)
+    #         sampler_val = samplers.DistributedSampler(
+    #             dataset_val, shuffle=False)
+    #else:
+    sampler_train = torch.utils.data.RandomSampler(dataset_train)
+    sampler_val = torch.utils.data.SequentialSampler(dataset_val)
     coco_evaluator = None
     batch_sampler_train = torch.utils.data.BatchSampler(
         sampler_train, args.batch_size, drop_last=True)

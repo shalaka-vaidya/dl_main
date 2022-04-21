@@ -394,33 +394,33 @@ def save_on_master(*args, **kwargs):
 
 
 def init_distributed_mode(args):
-    if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
-        args.rank = int(os.environ["RANK"])
-        args.world_size = int(os.environ['WORLD_SIZE'])
-        args.gpu = int(os.environ['LOCAL_RANK'])
-        args.dist_url = 'env://'
-        os.environ['LOCAL_SIZE'] = str(torch.cuda.device_count())
-    elif 'SLURM_PROCID' in os.environ:
-        proc_id = int(os.environ['SLURM_PROCID'])
-        ntasks = int(os.environ['SLURM_NTASKS'])
-        node_list = os.environ['SLURM_NODELIST']
-        num_gpus = torch.cuda.device_count()
-        addr = subprocess.getoutput(
-            'scontrol show hostname {} | head -n1'.format(node_list))
-        os.environ['MASTER_PORT'] = os.environ.get('MASTER_PORT', '29500')
-        os.environ['MASTER_ADDR'] = addr
-        os.environ['WORLD_SIZE'] = str(ntasks)
-        os.environ['RANK'] = str(proc_id)
-        os.environ['LOCAL_RANK'] = str(proc_id % num_gpus)
-        os.environ['LOCAL_SIZE'] = str(num_gpus)
-        args.dist_url = 'env://'
-        args.world_size = ntasks
-        args.rank = proc_id
-        args.gpu = proc_id % num_gpus
-    else:
-        print('Not using distributed mode')
-        args.distributed = False
-        return
+    # if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
+    #     args.rank = int(os.environ["RANK"])
+    #     args.world_size = int(os.environ['WORLD_SIZE'])
+    #     args.gpu = int(os.environ['LOCAL_RANK'])
+    #     args.dist_url = 'env://'
+    #     os.environ['LOCAL_SIZE'] = str(torch.cuda.device_count())
+    # elif 'SLURM_PROCID' in os.environ:
+    #     proc_id = int(os.environ['SLURM_PROCID'])
+    #     ntasks = int(os.environ['SLURM_NTASKS'])
+    #     node_list = os.environ['SLURM_NODELIST']
+    #     num_gpus = torch.cuda.device_count()
+    #     addr = subprocess.getoutput(
+    #         'scontrol show hostname {} | head -n1'.format(node_list))
+    #     os.environ['MASTER_PORT'] = os.environ.get('MASTER_PORT', '29500')
+    #     os.environ['MASTER_ADDR'] = addr
+    #     os.environ['WORLD_SIZE'] = str(ntasks)
+    #     os.environ['RANK'] = str(proc_id)
+    #     os.environ['LOCAL_RANK'] = str(proc_id % num_gpus)
+    #     os.environ['LOCAL_SIZE'] = str(num_gpus)
+    #     args.dist_url = 'env://'
+    #     args.world_size = ntasks
+    #     args.rank = proc_id
+    #     args.gpu = proc_id % num_gpus
+    # else:
+    print('Not using distributed mode')
+    args.distributed = False
+    return
 
     args.distributed = True
 
