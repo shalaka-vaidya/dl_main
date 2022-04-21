@@ -1,6 +1,7 @@
 import pytorch_lightning as pl
 from pl_bolts.models.self_supervised import SwAV
 import torchvision.transforms as transforms
+from dataset import UnlabeledDataset, LabeledDataset
 #from pl_bolts.models.self_supervised.swav.transforms import (
 #     SwAVTrainDataTransform, SwAVEvalDataTransform
 # )
