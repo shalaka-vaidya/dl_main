@@ -22,13 +22,13 @@ from .transformer import build_transformer
 
 def build_model(args):
     if args.dataset_file == 'coco':
-        num_classes = 90
+        num_classes = 100
     elif args.dataset_file == 'coco_panoptic':
-        num_classes = 250
+        num_classes = 100
     elif args.dataset_file == 'airbus':
-        num_classes = 1
+        num_classes = 100
     else:
-        num_classes = 20
+        num_classes = 100
     num_classes += 1
     device = torch.device(args.device)
 
