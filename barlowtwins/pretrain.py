@@ -49,6 +49,17 @@ input_dimension = 32
 #     drop_last=True,
 #     num_workers=8,
 # )
+
+train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=False, num_workers=8)
+
+for i, output in enumerate(train_loader):
+    print(i, output.shape)
+    if i==10:
+        break
+print("done")
+
+
 train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
 dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=input_dimension, shuffle=False, num_workers=8)
 
