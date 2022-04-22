@@ -25,7 +25,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
 
 # Data 
-data_location = '/media/wlodder/Data/Datasets/Datasets/Image/neha/labeled_data/training/images'
+data_location = '/unlabeled'
 input_dimension = 32
 train_transform = torchvision.transforms.Compose([
     torchvision.transforms.ToTensor()
@@ -51,7 +51,7 @@ criterion = BarlowTwinsLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.06)
 
 print("Starting Training")
-for epoch in range(20):
+for epoch in range(2):
     total_loss = 0
     for (x0, x1), _, _ in dataloader:
         x0 = x0.to(device)
