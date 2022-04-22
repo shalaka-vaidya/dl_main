@@ -37,6 +37,6 @@ singularity exec --nv \
 /share/apps/images/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
-conda activate
+conda activate dl 
 python training.py
 "

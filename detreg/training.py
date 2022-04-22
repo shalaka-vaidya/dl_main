@@ -1,10 +1,11 @@
 import pytorch_lightning as pl
 from pl_bolts.models.self_supervised import SwAV
-import torchvision.transforms as transforms
+import torchvision
+import torch
 from dataset import UnlabeledDataset, LabeledDataset
-#from pl_bolts.models.self_supervised.swav.transforms import (
-#     SwAVTrainDataTransform, SwAVEvalDataTransform
-# )
+from pl_bolts.models.self_supervised.swav.transforms import (
+    SwAVTrainDataTransform, SwAVEvalDataTransform
+)
 #from pl_bolts.transforms.dataset_normalizations import stl10_normalization
 
 # data
@@ -18,11 +19,11 @@ dm = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=F
 
 
 dm.train_transforms = SwAVTrainDataTransform(
-    normalize=transforms.Normalize((0.4917,0.4694,0.4148),(0.2278,0.2240,0.2280))
+    normalize=torchvision.transforms.Normalize((0.4917,0.4694,0.4148),(0.2278,0.2240,0.2280))
 )
 
 dm.val_transforms = SwAVEvalDataTransform(
-    normalize=transforms.Normalize((0.4917,0.4694,0.4148),(0.2278,0.2240,0.2280))
+    normalize=torchvision.transforms.Normalize((0.4917,0.4694,0.4148),(0.2278,0.2240,0.2280))
 )
 
 
