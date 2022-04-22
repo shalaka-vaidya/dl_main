@@ -29,6 +29,7 @@ dm.val_transforms = SwAVEvalDataTransform(
 
 # model
 model = SwAV(
+    dataset=train_dataset,
     gpus=1,
     num_samples=100,
     batch_size=batch_size
