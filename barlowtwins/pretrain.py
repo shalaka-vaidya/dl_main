@@ -9,6 +9,7 @@ from barlow_twins import BarlowTwins
 
 from dataloader import *
 
+
 from classifier import Classifier
 
 # file paths
@@ -25,27 +26,30 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
 
 # Data 
-data_location = '/unlabeled'
+# data_location = '/tmp/unlabeled'
 input_dimension = 32
-train_transform = torchvision.transforms.Compose([
-    torchvision.transforms.ToTensor()
-])
+# train_transform = torchvision.transforms.Compose([
+#     torchvision.transforms.ToTensor()
+# ])
 
 #data = LabeledDataset(root=data_location,split=split,transforms=train_transform)
 #dataset = LightlyDataset.from_torch_dataset(data, transform=train_transform)
-dataset = LightlyDataset(
-    input_dir=data_location
-)
+# dataset = LightlyDataset(
+#     input_dir=data_location
+# )
 
-collate_fn = ImageCollateFunction(input_size=input_dimension)
-dataloader = torch.utils.data.DataLoader(
-    dataset,
-    batch_size=2048,
-    collate_fn=collate_fn,
-    shuffle=True,
-    drop_last=True,
-    num_workers=8,
-)
+# collate_fn = ImageCollateFunction(input_size=input_dimension)
+# dataloader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=2048,
+#     collate_fn=collate_fn,
+#     shuffle=True,
+#     drop_last=True,
+#     num_workers=8,
+# )
+train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
+dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=input_dimension, shuffle=False, num_workers=8)
+
 
 criterion = BarlowTwinsLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.06)
