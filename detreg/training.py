@@ -36,5 +36,5 @@ model = SwAV(
 )
 
 # fit
-trainer = pl.Trainer(default_root_dir='./model',precision=16, max_epochs=1)
+trainer = pl.Trainer(enable_pl_optimizer=False, default_root_dir='./model',precision=16, max_epochs=1)
 trainer.fit(model, dm)
