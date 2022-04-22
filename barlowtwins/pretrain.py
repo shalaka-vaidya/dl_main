@@ -8,6 +8,8 @@ from lightly.loss import BarlowTwinsLoss
 from barlow_twins import BarlowTwins
 
 from dataloader import *
+from dataset import UnlabeledDataset, LabeledDataset
+
 
 
 from classifier import Classifier
