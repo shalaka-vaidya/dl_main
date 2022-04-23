@@ -47,7 +47,7 @@ def main():
     collate_fn = ImageCollateFunction(input_size=input_dimension)
     dataloader = torch.utils.data.DataLoader(
         dataset,
-        batch_size=1024,
+        batch_size=2048,
         collate_fn=collate_fn,
         shuffle=True,
         drop_last=True,

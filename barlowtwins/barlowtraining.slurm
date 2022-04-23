@@ -21,6 +21,7 @@
 #SBATCH --error=demo_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
+#SBATCH --wrap "sleep infinity"
 
 mkdir /tmp/$USER
 export SINGULARITY_CACHEDIR=/tmp/$USER
