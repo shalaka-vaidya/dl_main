@@ -32,13 +32,14 @@ def main():
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
+    print("ran model")
 
-    # # Data 
-    # # data_location = '/tmp/unlabeled'
-    # input_dimension = 32
-    # # train_transform = torchvision.transforms.Compose([
-    # #     torchvision.transforms.ToTensor()
-    # # ])
+    # Data 
+    # data_location = '/tmp/unlabeled'
+    input_dimension = 32
+    # train_transform = torchvision.transforms.Compose([
+    #     torchvision.transforms.ToTensor()
+    # ])
 
     #data = LabeledDataset(root=data_location,split=split,transforms=train_transform)
     #dataset = LightlyDataset.from_torch_dataset(data, transform=train_transform)
@@ -46,15 +47,16 @@ def main():
     #     input_dir=data_location
     # )
 
-    # # collate_fn = ImageCollateFunction(input_size=input_dimension)
-    # # dataloader = torch.utils.data.DataLoader(
-    # #     dataset,
-    # #     batch_size=2048,
-    # #     collate_fn=collate_fn,
-    # #     shuffle=True,
-    # #     drop_last=True,
-    # #     num_workers=8,
-    # # )
+    collate_fn = ImageCollateFunction(input_size=input_dimension)
+    dataloader = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=2048,
+        collate_fn=collate_fn,
+        shuffle=True,
+        drop_last=True,
+        num_workers=8,
+    )
+    print('got data loader')
 
     # train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
     # train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=False, num_workers=8)
@@ -76,7 +78,9 @@ def main():
     print("Starting Training")
     for epoch in range(2):
         total_loss = 0
-        for (x0, x1), _, _ in train_loader:
+        print("entering epoch", epoch)
+        for (x0, x1), _, _ in dataloader:
+            print("HI")
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0 = model(x0)
@@ -86,7 +90,7 @@ def main():
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
-        avg_loss = total_loss / len(train_loader)
+        avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
 
     torch.save(model.state_dict(), f"{save_path}/{file_name}")
