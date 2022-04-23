@@ -73,7 +73,7 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), lr=0.06)
 
     print("Starting Training")
-    for epoch in range(2):
+    for epoch in range(1):
         total_loss = 0
         c=0
         print("entering epoch", epoch)
