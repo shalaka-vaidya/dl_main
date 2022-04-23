@@ -47,7 +47,7 @@ def main():
     collate_fn = ImageCollateFunction(input_size=input_dimension)
     dataloader = torch.utils.data.DataLoader(
         dataset,
-        batch_size=2048,
+        batch_size=1024,
         collate_fn=collate_fn,
         shuffle=True,
         drop_last=True,
@@ -75,11 +75,13 @@ def main():
     print("Starting Training")
     for epoch in range(2):
         total_loss = 0
+        c=0
         print("entering epoch", epoch)
         for (x0, x1), _, _ in dataloader:
-            print("HI")
-            print(x0.shape)
-            print(x1.shape)
+            c+=1
+            #print("HI")
+            #print(x0.shape)
+            #print(x1.shape)
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0 = model(x0)
@@ -89,6 +91,7 @@ def main():
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+        print("in epoch", epoch, "iterations: ",c)
         avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
 

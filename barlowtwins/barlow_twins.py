@@ -7,7 +7,7 @@ class BarlowTwins(nn.Module):
         super().__init__()
         self.backbone = backbone
         self.proj_dim = proj_dim
-        self.projection_head = BarlowTwinsProjectionHead(2048, 2048, self.proj_dim)
+        self.projection_head = BarlowTwinsProjectionHead(512, 2048, self.proj_dim)
 
     def forward(self, x):
         x = self.backbone(x).flatten(start_dim=1)
