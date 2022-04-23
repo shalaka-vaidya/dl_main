@@ -9,15 +9,15 @@ from lightly.loss import BarlowTwinsLoss
 from barlow_twins import BarlowTwins
 
 from dataloader import *
-from dataset import UnlabeledDataset, LabeledDataset
+#from dataset import UnlabeledDataset, LabeledDataset
 import os
 
 
 from classifier import Classifier
 
 def main():
-    train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=False, num_workers=8)
+    #train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
+    #train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=False, num_workers=8)
     print("got data")
 
     #file paths
@@ -35,7 +35,7 @@ def main():
     print("ran model")
 
     # Data 
-    # data_location = '/tmp/unlabeled'
+    # data_location = '/unlabeled'
     input_dimension = 32
     # train_transform = torchvision.transforms.Compose([
     #     torchvision.transforms.ToTensor()
@@ -43,13 +43,10 @@ def main():
 
     #data = LabeledDataset(root=data_location,split=split,transforms=train_transform)
     #dataset = LightlyDataset.from_torch_dataset(data, transform=train_transform)
-    # dataset = LightlyDataset(
-    #     input_dir=data_location
-    # )
-
+    dataset = LightlyDataset('/unlabeled')
     collate_fn = ImageCollateFunction(input_size=input_dimension)
     dataloader = torch.utils.data.DataLoader(
-        train_dataset,
+        dataset,
         batch_size=2048,
         collate_fn=collate_fn,
         shuffle=True,
@@ -81,6 +78,8 @@ def main():
         print("entering epoch", epoch)
         for (x0, x1), _, _ in dataloader:
             print("HI")
+            print(x0.shape)
+            print(x1.shape)
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0 = model(x0)
