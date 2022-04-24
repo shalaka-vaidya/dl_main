@@ -31,7 +31,7 @@ def get_model(num_classes):
     resnet = torchvision.models.resnet50()
     backbone = nn.Sequential(*list(resnet.children())[:-1])
     backbone = BarlowTwins(backbone, 2048)
-    checkpoint_wt = torch.load("../barlowtwins/checkpoint_state.pth",map_location=torch.device('cpu'))
+    checkpoint_wt = torch.load("../barlowtwins/checkpoint_state.pth")
     backbone.load_state_dict(checkpoint_wt)
     modules = list(backbone.children())[:-1]
     backbone = torch.nn.Sequential(*modules)
@@ -44,7 +44,7 @@ def get_model(num_classes):
     roi_pooler = torchvision.ops.MultiScaleRoIAlign(
         featmap_names=['0'], output_size=7, sampling_ratio=2)
     model = FasterRCNN(backbone,
-                   num_classes=101,
+                   num_classes=num_classes,
                    rpn_anchor_generator=anchor_generator,
                    box_roi_pool=roi_pooler)
 
