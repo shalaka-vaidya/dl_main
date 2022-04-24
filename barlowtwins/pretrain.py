@@ -22,7 +22,8 @@ def main():
 
     #file paths
     save_path = './'
-    file_name = "checkpoint.pth"
+    file_name1 = "checkpoint_state.pth"
+    file_name2 = "checkpoint_whole.pth"
 
     # Model
     project_dimension = 2048
@@ -95,8 +96,8 @@ def main():
         avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
 
-    #torch.save(model.state_dict(), f"{save_path}/{file_name}")
-    torch.save(model,f"{save_path}/{file_name}" )
+    torch.save(model.state_dict(), f"{save_path}/{file_name1}")
+    torch.save(model,f"{save_path}/{file_name2}" )
 
     # def main():
     #     train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
