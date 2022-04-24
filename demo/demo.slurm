@@ -21,6 +21,8 @@
 #SBATCH --error=demo_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
+#SBATCH --mem-per-cpu=32G
+
 
 mkdir /tmp/$USER
 export SINGULARITY_CACHEDIR=/tmp/$USER
