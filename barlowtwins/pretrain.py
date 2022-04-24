@@ -95,8 +95,8 @@ def main():
         avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
 
-    torch.save(model.state_dict(), f"{save_path}/{file_name}")
-
+    #torch.save(model.state_dict(), f"{save_path}/{file_name}")
+    torch.save(model,f"{save_path}/{file_name}" )
 
     # def main():
     #     train_dataset = UnlabeledDataset(root='/unlabeled', transform=torchvision.transforms.ToTensor())
