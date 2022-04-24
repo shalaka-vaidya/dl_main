@@ -31,7 +31,7 @@ def get_model(num_classes):
     resnet = torchvision.models.resnet50()
     backbone = nn.Sequential(*list(resnet.children())[:-1])
     backbone = BarlowTwins(backbone, 2048)
-    checkpoint_wt = torch.load("../barlowtwins/checkpoint.pth",map_location=torch.device('cpu'))
+    checkpoint_wt = torch.load("../barlowtwins/checkpoint_state.pth",map_location=torch.device('cpu'))
     backbone.load_state_dict(checkpoint_wt)
     modules = list(backbone.children())[:-1]
     backbone = torch.nn.Sequential(*modules)
