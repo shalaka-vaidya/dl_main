@@ -9,6 +9,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+from barlow_twins import BarlowTwins
+from torchvision.models.detection import FasterRCNN
+from torchvision.models.detection.rpn import AnchorGenerator
 
 import transforms as T
 import utils
@@ -25,16 +28,29 @@ def get_transform(train):
     return T.Compose(transforms)
 
 def get_model(num_classes):
+    resnet = torchvision.models.resnet50()
+    backbone = nn.Sequential(*list(resnet.children())[:-1])
+    backbone = BarlowTwins(backbone, 2048)
+    checkpoint_wt = torch.load("../barlowtwins/checkpoint.pth",map_location=torch.device('cpu'))
+    backbone.load_state_dict(checkpoint_wt)
+    modules = list(backbone.children())[:-1]
+    backbone = torch.nn.Sequential(*modules)
 
-    checkpoint_wt = torch.load("../barlowtwins/checkpoint.pth")   
-
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False,weights_backbone = checkpoint_wt)
+    #model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False,weights_backbone = checkpoint_wt)
+    anchor_generator = AnchorGenerator(
+        sizes=((32, 64, 128, 256, 512),), aspect_ratios=((0.5, 1.0, 2.0),))
+    roi_pooler = torchvision.ops.MultiScaleRoIAlign(
+        featmap_names=['0'], output_size=7, sampling_ratio=2)
+    model = FasterRCNN(backbone,
+                   num_classes=2,
+                   rpn_anchor_generator=anchor_generator,
+                   box_roi_pool=roi_pooler)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     # replace the pre-trained head with a new one
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
-
+    print("YAY")
     return model
 
 def main():
