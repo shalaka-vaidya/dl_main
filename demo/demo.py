@@ -57,7 +57,8 @@ def get_model(num_classes):
 
 def main():
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-
+    save_path = './'
+    file_name1 = "checkpoint_class_"
     num_classes = 101
     train_dataset = LabeledDataset(root='/labeled', split="training", transforms=get_transform(train=True))
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=2, shuffle=True, num_workers=4, collate_fn=utils.collate_fn)
@@ -80,6 +81,7 @@ def main():
         # update the learning rate
         lr_scheduler.step()
         # evaluate on the test dataset
+        torch.save(model.state_dict(), f"{save_path}/{file_name1+str(epoch)+'.pth'}")
         evaluate(model, valid_loader, device=device)
 
     print("That's it!")
