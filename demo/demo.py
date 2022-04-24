@@ -36,13 +36,15 @@ def get_model(num_classes):
     modules = list(backbone.children())[:-1]
     backbone = torch.nn.Sequential(*modules)
 
+    backbone.out_channels = 2048
+
     #model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False,weights_backbone = checkpoint_wt)
     anchor_generator = AnchorGenerator(
         sizes=((32, 64, 128, 256, 512),), aspect_ratios=((0.5, 1.0, 2.0),))
     roi_pooler = torchvision.ops.MultiScaleRoIAlign(
         featmap_names=['0'], output_size=7, sampling_ratio=2)
     model = FasterRCNN(backbone,
-                   num_classes=2,
+                   num_classes=101,
                    rpn_anchor_generator=anchor_generator,
                    box_roi_pool=roi_pooler)
 
