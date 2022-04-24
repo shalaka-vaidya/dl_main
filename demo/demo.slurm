@@ -28,7 +28,7 @@ export SINGULARITY_CACHEDIR=/tmp/$USER
 cp -rp /scratch/DL22SP/unlabeled_224.sqsh /tmp
 cp -rp /scratch/DL22SP/labeled.sqsh /tmp
 echo "Dataset is copied to /tmp"
-
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb
 singularity exec --nv \
 --bind /scratch \
 --overlay /scratch/DL22SP/conda.ext3:ro \
