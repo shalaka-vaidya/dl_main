@@ -25,7 +25,10 @@ def get_transform(train):
     return T.Compose(transforms)
 
 def get_model(num_classes):
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
+
+    checkpoint_wt = torch.load("../barlowtwins/checkpoint.pth")   
+
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False,weights_backbone = checkpoint_wt)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -37,12 +40,12 @@ def get_model(num_classes):
 def main():
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    num_classes = 100
+    num_classes = 101
     train_dataset = LabeledDataset(root='/labeled', split="training", transforms=get_transform(train=True))
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=2, shuffle=True, num_workers=2, collate_fn=utils.collate_fn)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=20, shuffle=True, num_workers=4, collate_fn=utils.collate_fn)
 
     valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
-    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=2, shuffle=False, num_workers=2, collate_fn=utils.collate_fn)
+    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=20, shuffle=False, num_workers=4, collate_fn=utils.collate_fn)
 
     model = get_model(num_classes)
     model.to(device)
@@ -51,7 +54,7 @@ def main():
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-    num_epochs = 1
+    num_epochs = 2
 
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
