@@ -51,7 +51,7 @@ def main():
         collate_fn=collate_fn,
         shuffle=True,
         drop_last=True,
-        num_workers=2,
+        num_workers=4,
     )
     print('got data loader')
 
