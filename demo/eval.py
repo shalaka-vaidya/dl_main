@@ -47,7 +47,7 @@ def get_model(num_classes):
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
     return model
 
-def main():
+def main(checkpoint_path):
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     num_classes = 101
     valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
@@ -55,12 +55,12 @@ def main():
 
     model = get_model(num_classes)
     model.to(device)
-    model.load_state_dict(torch.load('./chkpt.pth', map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device('cpu')))
     model.eval()
 
     evaluate(model, valid_loader, device=device)
 
 if __name__ == "__main__":
-    checkpoint_path = "./chkpt.pth"
+    checkpoint_path = "./checkpoint_state.pth"
 
-    main()
+    main(checkpoint_path)
