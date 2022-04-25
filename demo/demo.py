@@ -13,6 +13,7 @@ from barlow_twins import BarlowTwins
 from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 
+
 import transforms as T
 import utils
 from engine import train_one_epoch, evaluate
@@ -31,7 +32,7 @@ def get_model(num_classes):
     resnet = torchvision.models.resnet50()
     backbone = nn.Sequential(*list(resnet.children())[:-1])
     backbone = BarlowTwins(backbone, 2048)
-    checkpoint_wt = torch.load("../barlowtwins/checkpoint_state.pth")
+    checkpoint_wt = torch.load("./latest.pth")
     backbone.load_state_dict(checkpoint_wt)
     modules = list(backbone.children())[:-1]
     backbone = torch.nn.Sequential(*modules)
@@ -73,7 +74,7 @@ def main():
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-    num_epochs = 2
+    num_epochs = 30
 
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
