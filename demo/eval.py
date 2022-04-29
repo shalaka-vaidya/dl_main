@@ -47,13 +47,24 @@ def get_model(num_classes):
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
     return model
 
+def get_model_new(num_classes):
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
+
+    # get number of input features for the classifier
+    in_features = model.roi_heads.box_predictor.cls_score.in_features
+    # replace the pre-trained head with a new one
+    model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+
+    return model
+
 def main(checkpoint_path):
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     num_classes = 101
     valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
     valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=2, shuffle=False, num_workers=4, collate_fn=utils.collate_fn)
 
-    model = get_model(num_classes)
+    #model = get_model(num_classes)
+    model = get_model_new(num_classes)
     model.to(device)
     model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device('cpu')))
     model.eval()
@@ -61,6 +72,6 @@ def main(checkpoint_path):
     evaluate(model, valid_loader, device=device)
 
 if __name__ == "__main__":
-    checkpoint_path = "./checkpoint_state.pth"
+    checkpoint_path = "./DEMOFinal2.pth"
 
     main(checkpoint_path)
