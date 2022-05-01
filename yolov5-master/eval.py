@@ -16,7 +16,7 @@ def get_transform(train):
 valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
 valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=2, shuffle=False, num_workers=4, collate_fn=collate_fn)
 count=0
-for img,trg in valid_loader(valid_loader):
+for img,trg in valid_loader:
     count+=1
     if count==3:
         break
