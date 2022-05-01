@@ -22,30 +22,23 @@ def get_transform(train):
         transforms.append(T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
 
-def get_model(num_classes):
-    resnet = torchvision.models.resnet50()
-    backbone = nn.Sequential(*list(resnet.children())[:-1])
-    backbone = BarlowTwins(backbone, 2048)
-    modules = list(backbone.children())[:-1]
-    backbone = torch.nn.Sequential(*modules)
-
-    backbone.out_channels = 2048
-
-    #model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False,weights_backbone = checkpoint_wt)
-    anchor_generator = AnchorGenerator(
-        sizes=((32, 64, 128, 256, 512),), aspect_ratios=((0.5, 1.0, 2.0),))
-    roi_pooler = torchvision.ops.MultiScaleRoIAlign(
-        featmap_names=['0'], output_size=7, sampling_ratio=2)
-    model = FasterRCNN(backbone,
-                   num_classes=num_classes,
-                   rpn_anchor_generator=anchor_generator,
-                   box_roi_pool=roi_pooler)
-
+def get_model(num_classes,device):
+    # torch.load(checkpoint_location)
+    # resnet = torchvision.models.resnet50()
+    # backbone = nn.Sequential(*list(resnet.children())[:-1])
+    # backbone = BarlowTwins(backbone, 2048)
+    #checkpoint_wt = torch.load('/home/azureuser/dl-project/dl_main/demo/checkpoint_25.pth',map_location=torch.device(device))
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False, pretrained_backbone=False)
+    #model_child_list = [c for c  in model.backbone.children()]
+    #model.backbone.body.load_state_dict(state_dict=checkpoint_wt, strict = False)
+    #print(model.backbone)
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     # replace the pre-trained head with a new one
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+    print("YAY")
     return model
+    #return model
 
 def get_model_new(num_classes):
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
@@ -72,6 +65,6 @@ def main(checkpoint_path):
     evaluate(model, valid_loader, device=device)
 
 if __name__ == "__main__":
-    checkpoint_path = "./DEMOFinal2.pth"
+    checkpoint_path = "./checkpoint_class_new3.pth"
 
     main(checkpoint_path)
