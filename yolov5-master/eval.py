@@ -20,4 +20,5 @@ for img,trg in valid_loader:
     count+=1
     if count==3:
         break
-    print(img.shape,trg.shape)
+    print(len(img))
+    print(len(trg))
