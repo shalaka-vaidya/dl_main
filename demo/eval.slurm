@@ -40,5 +40,5 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dl 
-python eval.py
+python eval.py checkpoint_class_new6.pth
 "
