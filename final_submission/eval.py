@@ -1,4 +1,4 @@
-import os
+import os,getopt
 import sys
 import torch
 import torch.nn as nn
@@ -49,7 +49,16 @@ def get_model_new(num_classes):
 
     return model
 
-def main(checkpoint_path):
+def main(argv):
+    try:
+      opts, args = getopt.getopt(argv,"i:")
+      for opt, arg in opts:
+        if opt =="-i":
+            checkpoint_path = arg
+            print("HERE ",checkpoint_path)
+    except getopt.GetoptError:
+      print ('test.py -i <inputfile>')
+      sys.exit(2)        
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     num_classes = 101
     valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
@@ -64,6 +73,5 @@ def main(checkpoint_path):
     evaluate(model, valid_loader, device=device)
 
 if __name__ == "__main__":
-    args=str(sys.argv)
-    checkpoint_path = args[1]
-    main(checkpoint_path)
+   main(sys.argv[1:])
+
