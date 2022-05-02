@@ -1,11 +1,10 @@
 import os
-
+import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from barlow_twins import BarlowTwins
 from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 
@@ -41,7 +40,7 @@ def get_model(num_classes,device):
     #return model
 
 def get_model_new(num_classes):
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False,pretrained_backbone=False)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -65,6 +64,6 @@ def main(checkpoint_path):
     evaluate(model, valid_loader, device=device)
 
 if __name__ == "__main__":
-    checkpoint_path = "./checkpoint_class_new3.pth"
-
+    args=str(sys.argv)
+    checkpoint_path = args[1]
     main(checkpoint_path)
