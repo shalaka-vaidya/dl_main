@@ -52,7 +52,7 @@ def main():
     model.to(device)
 
     #if resuming from checkpoint
-    #model.load_state_dict(torch.load('/home/azureuser/dl-project/dl_main/demo/checkpoint_class_new1.pth'))
+    #model.load_state_dict(torch.load('checkpoint_class_new1.pth'))
     params = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.5)
