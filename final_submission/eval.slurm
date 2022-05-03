@@ -39,6 +39,5 @@ singularity exec --nv \
 /share/apps/images/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
-conda activate dl 
-python eval.py checkpoint_class_new6.pth
+python eval.py -i "best_checkpoint.pth"
 "
