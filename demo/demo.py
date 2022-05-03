@@ -17,6 +17,7 @@ from engine import train_one_epoch, evaluate
 
 from dataset import UnlabeledDataset, LabeledDataset
 
+torch.manual_seed(3407)
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
