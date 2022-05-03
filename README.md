@@ -1,6 +1,6 @@
 1. For encoding/self-supervised part
-- we use unlabelled data
-- run the ssltraining.py with right paths to unlabelled data set
+    - we use unlabelled data
+    - run the ssltraining.py with right paths to unlabelled data set
 
 
 2. For supervised/classification part
