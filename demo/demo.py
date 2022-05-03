@@ -7,6 +7,7 @@ import torchvision
 from barlow_twins import BarlowTwins
 from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
 
 import transforms as T
