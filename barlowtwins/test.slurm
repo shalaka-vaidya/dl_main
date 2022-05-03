@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## change the last two digits to your team id
-#SBATCH --account=csci_ga_2572_2022sp_00
+#SBATCH --account=csci_ga_2572_2022sp_13
 
 ## change the partition number to use different number of GPUs
 #SBATCH --partition=n1s8-v100-1
@@ -37,6 +37,6 @@ singularity exec --nv \
 /share/apps/images/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
-conda activate
-python demo.py
+conda activate dl 
+python test_unlabeled.py
 "

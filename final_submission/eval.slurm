@@ -10,18 +10,19 @@
 
 #SBATCH --partition=n1s16-v100-2
 #SBATCH --gres=gpu:2
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=16
 
 ##SBATCH --partition=n1c24m128-v100-4
 ##SBATCH --gres=gpu:4
-##SBATCH --cpus-per-task=2
+##SBATCH --cpus-per-task=24
 
-#SBATCH --time=12:00:00
+#SBATCH --time=23:59:00
 #SBATCH --output=demo_%j.out
 #SBATCH --error=demo_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
 #SBATCH --mem-per-cpu=32G
+
 
 mkdir /tmp/$USER
 export SINGULARITY_CACHEDIR=/tmp/$USER
@@ -29,7 +30,7 @@ export SINGULARITY_CACHEDIR=/tmp/$USER
 cp -rp /scratch/DL22SP/unlabeled_224.sqsh /tmp
 cp -rp /scratch/DL22SP/labeled.sqsh /tmp
 echo "Dataset is copied to /tmp"
-
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb
 singularity exec --nv \
 --bind /scratch \
 --overlay /scratch/DL22SP/conda.ext3:ro \
@@ -38,7 +39,5 @@ singularity exec --nv \
 /share/apps/images/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
-conda activate dl 
-python busy.py &
-python pretrain.py
+python eval.py -i "best_checkpoint.pth"
 "
