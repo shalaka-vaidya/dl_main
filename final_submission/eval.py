@@ -12,7 +12,7 @@ from torchvision.models.detection.rpn import AnchorGenerator
 from dataset import UnlabeledDataset, LabeledDataset
 import transforms as T
 import utils
-from engine import evaluate
+from engine import evaluate, class_eval
 
 def get_transform(train):
     transforms = []
@@ -70,7 +70,7 @@ def main(argv):
     model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device('cpu')))
     model.eval()
 
-    evaluate(model, valid_loader, device=device)
+    class_eval(model, valid_loader, device=device)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
