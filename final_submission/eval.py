@@ -12,7 +12,7 @@ from torchvision.models.detection.rpn import AnchorGenerator
 from dataset import UnlabeledDataset, LabeledDataset
 import transforms as T
 import utils
-from engine import evaluate, class_eval
+from engine import evaluate
 
 def get_transform(train):
     transforms = []
