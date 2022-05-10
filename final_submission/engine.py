@@ -66,45 +66,6 @@ def _get_iou_types(model):
         iou_types.append("keypoints")
     return iou_types
 
-@torch.no_grad()
-def class_eval(model, data_loader, device):
-    n_threads = torch.get_num_threads()
-    metric_logger = utils.MetricLogger(delimiter="  ")
-    header = 'Test:'
-    cpu_device = torch.device("cpu")
-    coco = get_coco_api_from_dataset(data_loader.dataset)
-    iou_types = _get_iou_types(model)
-    coco_evaluator = CocoEvaluator(coco, iou_types)
-    for images, targets in metric_logger.log_every(data_loader, 100, header):
-        images = list(img.to(device) for img in images)
-        if device != 'cpu':
-            torch.cuda.synchronize()
-        model_time = time.time()
-        outputs = model(images)
-
-        outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
-        model_time = time.time() - model_time
-
-        res = {target["image_id"].item(): output for target, output in zip(targets, outputs)}
-        evaluator_time = time.time()
-        coco_evaluator.update(res)
-        evaluator_time = time.time() - evaluator_time
-        metric_logger.update(model_time=model_time, evaluator_time=evaluator_time)
-
-    # gather the stats from all processes
-    metric_logger.synchronize_between_processes()
-    print("Averaged stats:", metric_logger)
-    coco_evaluator.synchronize_between_processes()
-    for i in range(100):
-        coco_evaluator.accumulate()
-        coco_evaluator.summarize()
-        print("getting for 1")
-        torch.set_num_threads(n_threads)
-        coco_evaluator.params.catIds=[i]
-    return coco_evaluator
-
-
-
 
 @torch.no_grad()
 def evaluate(model, data_loader, device):
@@ -118,7 +79,7 @@ def evaluate(model, data_loader, device):
 
     coco = get_coco_api_from_dataset(data_loader.dataset)
     iou_types = _get_iou_types(model)
-    coco_evaluator = CocoEvaluator(coco, iou_types, 1)
+    coco_evaluator = CocoEvaluator(coco, iou_types)
 
     for images, targets in metric_logger.log_every(data_loader, 100, header):
         images = list(img.to(device) for img in images)
@@ -144,6 +105,7 @@ def evaluate(model, data_loader, device):
     # accumulate predictions from all images
     coco_evaluator.accumulate()
     coco_evaluator.summarize()
-    print("COCOeval", coco_evaluator.coco_eval['bbox'])
+    coco_eval = coco_evaluator.coco_eval["bbox"]
+    print("HUSHHH")
     torch.set_num_threads(n_threads)
     return coco_evaluator
