@@ -70,7 +70,7 @@ def main(argv):
     model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device('cpu')))
     model.eval()
 
-    class_eval(model, valid_loader, device=device)
+    evaluate(model, valid_loader, device=device)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
